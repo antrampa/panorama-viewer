@@ -7,20 +7,109 @@
     <link rel="stylesheet" href="libs/pannellum/pannellum.css">
     <script src="libs/pannellum/pannellum.js"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
         #panorama {
             width: 100%;
-            height: 100vh;
+            height: 80vh;
+        }
+        #controls {
+            text-align: center;
+            margin-top: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div id="panorama"></div>
+    
+    <div id="controls">
+        <button onclick="changePanorama('panorama1.jpg')">View Panorama 1</button>
+        <button onclick="changePanorama('panorama2.jpg')">View Panorama 2</button>
+        <button onclick="changePanorama('panorama3.jpg')">View Panorama 3</button>
+        <button onclick="changePanorama('panorama4.jpg')">View Panorama 4</button>
+        <button onclick="changePanorama('panorama5.jpg')">View Panorama 5</button>
+    </div>
+
     <script>
-        pannellum.viewer("panorama", {
-            type: "equirectangular",
-            panorama: "panorama.jpg", // Place your 360° image in the "public" folder
-            autoLoad: true
-        });
+        let viewer; // Global viewer variable
+
+        function initViewer(image) {
+            viewer = pannellum.viewer("panorama", {
+                type: "equirectangular",
+                panorama: "images/" + image, // Default panorama
+                autoLoad: true,
+                showControls: true,
+                hotSpots: [
+                    {
+                        pitch: 10, // Vertical angle
+                        yaw: 20,   // Horizontal angle
+                        type: "info",
+                        text: "Welcome to this view!",
+                    },
+                    {
+                        pitch: -5,
+                        yaw: -30,
+                        type: "scene",
+                        text: "Go to next panorama",
+                        sceneId: "scene2"
+                    }
+                ],
+                scenes: {
+                    scene1: {
+                        panorama: "images/" + "panorama1.jpg",
+                        hotSpots: [
+                            {
+                                pitch: 10,
+                                yaw: 20,
+                                type: "info",
+                                text: "Welcome to Panorama 1!",
+                            },
+                            {
+                                pitch: -5,
+                                yaw: -30,
+                                type: "scene",
+                                text: "Go to Panorama 2",
+                                sceneId: "scene2"
+                            }
+                        ]
+                    },
+                    scene2: {
+                        panorama: "images/" + "panorama2.jpg",
+                        hotSpots: [
+                            {
+                                pitch: 15,
+                                yaw: 40,
+                                type: "info",
+                                text: "You're now in Panorama 2!",
+                            },
+                            {
+                                pitch: -5,
+                                yaw: -30,
+                                type: "scene",
+                                text: "Go back to Panorama 1",
+                                sceneId: "scene1"
+                            }
+                        ]
+                    }
+                }
+            });
+        }
+
+        function changePanorama(image) {
+            if (viewer) {
+                viewer.loadScene(image === "panorama1.jpg" ? "scene1" : "scene2");
+            }
+        }
+
+        // Initialize the viewer with the default image
+        initViewer("panorama1.jpg");
     </script>
 </body>
 </html>
