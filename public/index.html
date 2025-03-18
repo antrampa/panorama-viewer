@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360 Panorama Viewer</title>
+    <link rel="stylesheet" href="libs/pannellum/pannellum.css">
+    <script src="libs/pannellum/pannellum.js"></script>
+    <style>
+        #panorama {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="panorama"></div>
+    <script>
+        pannellum.viewer("panorama", {
+            type: "equirectangular",
+            panorama: "panorama.jpg", // Place your 360° image in the "public" folder
+            autoLoad: true
+        });
+    </script>
+</body>
+</html>
